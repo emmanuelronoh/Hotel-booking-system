@@ -1,5 +1,5 @@
 ## Hotel Booking System
-https://emmanuelronoh/hotel-booking-system.vercel.app/
+https://hotel-booking-system-woad.vercel.app/
 
 Hotel Booking System built with React JS with Context for state management and TypeScript for static type checking.
 
