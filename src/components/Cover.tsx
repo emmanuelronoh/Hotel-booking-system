@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface CoverProps {
     coverClass?: string;
+    children?: ReactNode;  // Add children prop of type ReactNode
 }
 
 const Cover: React.FC<CoverProps> = (props) => {
@@ -10,7 +11,7 @@ const Cover: React.FC<CoverProps> = (props) => {
         <header className={coverClass}>
             {children}
         </header>
-    )
+    );
 }
 
 export default Cover;

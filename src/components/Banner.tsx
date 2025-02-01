@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface CoverProps {
     title: string;
-    subtitle?: string
+    subtitle?: string;
+    children?: ReactNode;  // Add children prop of type ReactNode
 }
 
-const Banner: React.FC<CoverProps> = (props) => {
-    const { subtitle, title, children } = props;
+const Banner: React.FC<CoverProps> = ({ subtitle, title, children }) => {
     return (
         <div className="banner">
             <h1>{title}</h1>
@@ -14,7 +14,7 @@ const Banner: React.FC<CoverProps> = (props) => {
             <p>{subtitle}</p>
             {children}
         </div>
-    )
+    );
 }
 
 export default Banner;

@@ -1,17 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, PropsWithChildren } from 'react';
 import { IStateContext, RoomsObject } from '../models/models';
 import items from './data';
 
-const RoomContext = React.createContext<RoomsObject | null>(null);
+// Define the shape of the context
+export interface IRoomContext extends IStateContext {
+    getRoom: (slug: string) => any;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    handleChecked: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-class RoomProvider extends Component<{}, IStateContext> {
+// Create the context with the correct type
+const RoomContext = React.createContext<IRoomContext | null>(null);
 
+class RoomProvider extends Component<PropsWithChildren<{}>, IStateContext> {
     public readonly state: Readonly<IStateContext> = {
         rooms: [],
         sortedRooms: [],
         featuredRooms: [],
         loading: true,
-        type: "all",
+        type: 'all',
         capacity: 1,
         price: 0,
         minPrice: 0,
@@ -19,8 +26,8 @@ class RoomProvider extends Component<{}, IStateContext> {
         minSize: 0,
         maxSize: 0,
         breakfast: false,
-        pets: false
-    }
+        pets: false,
+    };
 
     // Get Data when component mount
     public componentDidMount() {
@@ -36,35 +43,41 @@ class RoomProvider extends Component<{}, IStateContext> {
             loading: false,
             price: maxPrice,
             maxPrice,
-            maxSize
-        })
-
+            maxSize,
+        });
     }
 
     public render() {
         return (
-            <RoomContext.Provider value={{...this.state, getRoom: this.getRoom, handleChange: this.handleChange, handleChecked: this.handleChecked}}>
+            <RoomContext.Provider
+                value={{
+                    ...this.state,
+                    getRoom: this.getRoom,
+                    handleChange: this.handleChange,
+                    handleChecked: this.handleChecked,
+                }}
+            >
                 {this.props.children}
             </RoomContext.Provider>
-        )
+        );
     }
 
     private formatData = (items: any) => {
         const tempItems = items.map((item: any) => {
-            let id = item.sys.id
-            let images = item.fields.images.map((image: any) => image.fields.file.url)
-            const room = {...item.fields, images, id} // Reformating the array
+            let id = item.sys.id;
+            let images = item.fields.images.map((image: any) => image.fields.file.url);
+            const room = { ...item.fields, images, id }; // Reformating the array
             return room;
-        })
+        });
 
         return tempItems;
-    }
+    };
 
     private getRoom = (slug: string) => {
         const tempRooms = [...this.state.rooms];
         const room = tempRooms.find((room: any) => room.slug === slug);
         return room;
-    }
+    };
 
     private handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = event.target.value;
@@ -74,11 +87,11 @@ class RoomProvider extends Component<{}, IStateContext> {
         obj[name] = value;
 
         this.setState(obj, this.filterRooms);
-    }
+    };
 
-    private handleChecked = (event: any) => {
-        console.log("pets", this.state.pets);
-        console.log("breakfast", this.state.breakfast);
+    private handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('pets', this.state.pets);
+        console.log('breakfast', this.state.breakfast);
         const value = event.target.checked;
         const name = event.target.name;
 
@@ -86,7 +99,7 @@ class RoomProvider extends Component<{}, IStateContext> {
         obj[name] = value;
 
         this.setState(obj, this.filterRooms);
-    }
+    };
 
     private filterRooms = () => {
         let { rooms, type, capacity, price, minSize, maxSize, breakfast, pets } = this.state;
@@ -98,35 +111,35 @@ class RoomProvider extends Component<{}, IStateContext> {
 
         // filter by type
         if (type !== 'all') {
-            tempRooms = tempRooms.filter(room => room.type === type)
+            tempRooms = tempRooms.filter((room) => room.type === type);
         }
 
         // filter by capacity
         if (capacity !== 1) {
-            tempRooms = tempRooms.filter(room => room.capacity >= capacity)
+            tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
         }
 
         // filter by price
-        tempRooms = tempRooms.filter(room => room.price <= price)
+        tempRooms = tempRooms.filter((room) => room.price <= price);
 
         // filter by size
-        tempRooms = tempRooms.filter(room => room.size >= minSize && room.size <= maxSize);
+        tempRooms = tempRooms.filter((room) => room.size >= minSize && room.size <= maxSize);
 
         // filter by breakfast
         if (breakfast) {
-            tempRooms = tempRooms.filter(room => room.breakfast === true);
+            tempRooms = tempRooms.filter((room) => room.breakfast === true);
         }
 
         // filter by pets
         if (pets) {
-            tempRooms = tempRooms.filter(room => room.pets === true);
+            tempRooms = tempRooms.filter((room) => room.pets === true);
         }
 
         // change state
         this.setState({
-            sortedRooms: tempRooms
-        })
-    }
+            sortedRooms: tempRooms,
+        });
+    };
 }
 
 const RoomConsumer = RoomContext.Consumer;
@@ -134,12 +147,15 @@ const RoomConsumer = RoomContext.Consumer;
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 // For Using Context with Functional Component (Stateless) with HOC
-export const withRoomConsumer = <P extends {}>(Component: React.ComponentClass<P> | React.StatelessComponent<P>): React.FC<any> => props => {
-    return <RoomConsumer>
-            { value => <Component {...props} context={value} />}
-        </RoomConsumer>;
+export const withRoomConsumer = <P extends {}>(
+    Component: React.ComponentClass<P> | React.FunctionComponent<P>
+): React.FC<any> => (props) => {
+    return (
+        <RoomConsumer>
+            {(value) => <Component {...props} context={value} />}
+        </RoomConsumer>
+    );
 };
 
 // Exporting all contexts
-export {RoomProvider, RoomConsumer, RoomContext};
-
+export { RoomProvider, RoomConsumer, RoomContext };
