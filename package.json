@@ -1,25 +1,24 @@
 {
-  "name": "hotel-booking-app",
+  "name": "hotel-booking-system",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://shubhamd99.github.io/react-hotel-booking-app/",
   "dependencies": {
-    "@types/jest": "24.0.15",
-    "@types/node": "12.0.10",
-    "@types/react": "16.8.22",
-    "@types/react-dom": "16.8.4",
-    "node-sass": "^4.12.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-icons": "^3.7.0",
-    "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
-    "styled-components": "^4.3.2",
-    "typescript": "3.5.2"
+    "@types/jest": "^29.0.0",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "sass": "^1.70.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
+    "react-router-dom": "^6.20.0",
+    "react-scripts": "^5.0.1",
+    "styled-components": "^5.3.11",
+    "typescript": "^5.2.0"
   },
   "scripts": {
-    "build:css": "node-sass src/assets/styles/sass/ -o src/assets/styles/css/",
-    "watch:css": "npm run build:css && node-sass src/assets/styles/sass/ -o src/assets/styles/css/ --watch --recursive",
+    "build:css": "sass src/assets/styles/sass/:src/assets/styles/css/",
+    "watch:css": "npm run build:css && sass --watch src/assets/styles/sass/:src/assets/styles/css/",
     "start:js": "react-scripts start",
     "start": "npm-run-all -p watch:css start:js",
     "build": "npm run build:css && react-scripts build",
@@ -46,9 +45,9 @@
   "devDependencies": {
     "@types/node-sass": "^4.11.0",
     "@types/react-icons": "^3.0.0",
-    "@types/react-router-dom": "^4.3.4",
-    "@types/styled-components": "^4.1.16",
-    "gh-pages": "^2.0.1",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.26",
+    "gh-pages": "^5.0.0",
     "npm-run-all": "^4.1.5"
   }
 }

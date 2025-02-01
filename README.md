@@ -1,7 +1,7 @@
-## Hotel Booking system
+## Hotel Booking System
 https://emmanuelronoh/hotel-booking-system.vercel.app/
 
-Hotel Booking system build with React JS with Context for state management and typescript for static type checking
+Hotel Booking System built with React JS with Context for state management and TypeScript for static type checking.
 
 ![alt_img](https://i.imgur.com/LFNqVsM.png)
 
@@ -10,4 +10,3 @@ Hotel Booking system build with React JS with Context for state management and t
 ![alt_img](https://i.imgur.com/RjO5oZl.png)
 
 ![alt_img](https://i.imgur.com/xA2sIX7.png)
-
